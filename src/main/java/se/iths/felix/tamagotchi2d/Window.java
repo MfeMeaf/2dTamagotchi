@@ -5,21 +5,20 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
 import static java.sql.Types.NULL;
+import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Window {
-
-    int width, height;
-    String title;
+    private static Window window = null;
+    private int width, height;
+    private String title;
     private long glfwWindow;
 
 
-    private static Window window = null;
-
     private Window() {
         this.width = 1080;
-        this.height = 1080;
+        this.height = 570;
         this.title = "Tamagotchi";
     }
 
@@ -35,6 +34,15 @@ public class Window {
 
         init();
         loop();
+
+        // Free the memory
+        glfwFreeCallbacks(glfwWindow);
+        glfwDestroyWindow(glfwWindow);
+
+        // Terminate GLFW and the free the error callback
+        glfwTerminate();
+        glfwSetErrorCallback(null).free();
+
     }
 
     public void init() {
@@ -65,6 +73,11 @@ public class Window {
             throw new IllegalStateException("Failed to create GLFW window");
         }
 
+        glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);
+        glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
+        glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
+        glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
+
         // Make openGL context current
         glfwMakeContextCurrent(glfwWindow);
         // Enable vsync
@@ -78,10 +91,12 @@ public class Window {
 
     public void loop() {
         while (!glfwWindowShouldClose(glfwWindow)) {
+            // poll events
             glfwPollEvents();
 
-            glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+            glClearColor(0.0f, 0.5f, 1.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
+
 
             glfwSwapBuffers(glfwWindow);
         }
