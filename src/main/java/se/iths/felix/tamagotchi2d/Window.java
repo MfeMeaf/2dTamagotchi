@@ -193,17 +193,17 @@ public class Window {
                 case"2":
                     tamagotchi.play();
                     break;
+                case"3":
+                    tamagotchi.work();
+                    break;
+                case"4":
+                    tamagotchi.gamble();
+                    break;
                 default:
             }
 
-            nvgText(vg, 500, 800, "Food: " + tamagotchi.getFood() + " Happiness: "+ tamagotchi.getHappiness() + " Money: " + tamagotchi.getMoney());
+            nvgText(vg, 500, 800, tamagotchi.toString());
             nvgText(vg, 500,500, text);
-
-
-            if (KeyListener.isKeyPressed(GLFW_KEY_SPACE))
-                nvgText(vg, 100, 100, "SPACE KEY PRESSED");
-
-
 
             nvgEndFrame(vg);
 
