@@ -1,4 +1,4 @@
-package se.iths.felix.tamagotchi2d;
+package se.iths.felix.tamagotchi2d.GameClasses;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 

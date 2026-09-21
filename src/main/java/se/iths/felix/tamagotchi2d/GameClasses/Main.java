@@ -1,4 +1,4 @@
-package se.iths.felix.tamagotchi2d;
+package se.iths.felix.tamagotchi2d.GameClasses;
 
 public class Main {
     static void main() {

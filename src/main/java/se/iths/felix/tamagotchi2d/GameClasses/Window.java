@@ -1,4 +1,4 @@
-package se.iths.felix.tamagotchi2d;
+package se.iths.felix.tamagotchi2d.GameClasses;
 
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -6,8 +6,7 @@ import org.lwjgl.nanovg.NVGColor;
 import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.nanovg.NanoVGGL3;
 import org.lwjgl.opengl.GL;
-
-import java.sql.Time;
+import se.iths.felix.tamagotchi2d.Tamagotchi.TamagotchiMethods;
 
 import static java.sql.Types.NULL;
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -186,6 +185,7 @@ public class Window {
                 text = String.valueOf((char) key);
                 IO.println(text);
             }
+
             tamagotchi.checkIfAlive();
             if(tamagotchi.getAlive()){
                 switch (text){
@@ -217,6 +217,7 @@ public class Window {
             drawTamagotchi(500,500);
             if(KeyListener.isKeyPressed(GLFW_KEY_R))
                 tamagotchi = new TamagotchiMethods();
+
 
             nvgEndFrame(vg);
 

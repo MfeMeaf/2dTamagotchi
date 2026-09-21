@@ -1,10 +1,10 @@
-package se.iths.felix.tamagotchi2d;
+package se.iths.felix.tamagotchi2d.Tamagotchi;
 
 import static org.lwjgl.nanovg.NanoVG.nvgText;
 
 public class TamagotchiMethods {
-    String name;
-    String latestAction;
+    public String name;
+    public String latestAction;
     boolean alive;
     int food;
     int happiness;
