@@ -29,6 +29,9 @@ public class Window {
     private int fps = 0;
     private int frames = 0;
 
+    TamagotchiMethods tamagotchi = new TamagotchiMethods();
+
+
     private Window() {
         this.width = 1920;
         this.height = 1200;
@@ -92,8 +95,10 @@ public class Window {
         glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
 
         glfwMakeContextCurrent(glfwWindow);
-        glfwSwapInterval(0);
+        glfwSwapInterval(1);
         glfwShowWindow(glfwWindow);
+
+
 
         GL.createCapabilities();
 
@@ -145,6 +150,7 @@ public class Window {
         while (!glfwWindowShouldClose(glfwWindow)) {
             // poll events
             glfwPollEvents();
+            String text = "";
 
             //rgbScreen();
 
@@ -172,6 +178,27 @@ public class Window {
             nvgFillColor(vg, color);
 
             nvgText(vg, 0, 100, "FPS: " + fps);
+            nvgText(vg,200, 75, "What do you want to do? 1. Feed | 2. Play | 3. Work | 4. Gamble | 5. Quit.");
+
+            int key = KeyListener.getKeyPressed();
+
+            if(key != -1){
+                text = String.valueOf((char) key);
+                IO.println(text);
+            }
+            switch (text){
+                case "1":
+                    tamagotchi.feed();
+                    break;
+                case"2":
+                    tamagotchi.play();
+                    break;
+                default:
+            }
+
+            nvgText(vg, 500, 800, "Food: " + tamagotchi.getFood() + " Happiness: "+ tamagotchi.getHappiness() + " Money: " + tamagotchi.getMoney());
+            nvgText(vg, 500,500, text);
+
 
             if (KeyListener.isKeyPressed(GLFW_KEY_SPACE))
                 nvgText(vg, 100, 100, "SPACE KEY PRESSED");
@@ -182,7 +209,7 @@ public class Window {
 
 
             glfwSwapBuffers(glfwWindow);
-
+            KeyListener.endFrame();
         }
     }
 }
