@@ -5,7 +5,7 @@ import static org.lwjgl.nanovg.NanoVG.nvgText;
 public class TamagotchiMethods {
     String name;
     String latestAction;
-    boolean alive = true;
+    boolean alive;
     int food;
     int happiness;
     int money;
@@ -18,7 +18,7 @@ public class TamagotchiMethods {
 
     public TamagotchiMethods() {
         this.name = "Bichard";
-        this.alive = alive;
+        this.alive = true;
         this.food = 5;
         this.happiness = 5;
         this.money = 0;
@@ -68,14 +68,13 @@ public class TamagotchiMethods {
 
 
     public void findJob() {
-        System.out.println("You go to find a job");
         int jobChance = (int) (Math.random() * 100);
         if (jobChance < 25) {
-            int findJobInt = (int) (Math.random() * 4);
+            int findJobInt = (int) (Math.random() * jobs.length);
             job = jobs[findJobInt];
-            jobMult = jobsMult[(int) (Math.random() * 4)];
+            jobMult = jobsMult[findJobInt];
+            hasWork = true;
         }
-        hasWork = true;
     }
 
     public void gamble() {

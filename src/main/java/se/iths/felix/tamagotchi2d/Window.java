@@ -38,8 +38,8 @@ public class Window {
         this.height = 1200;
         this.title = "Best Tamogotchi 2D";
         r = 0.53f;
-        g = 0.5f;
-        b = 0.95f;
+        g = 0.0f;
+        b = 0.65f;
         a = 1;
     }
 
@@ -184,11 +184,9 @@ public class Window {
 
             if(key != -1){
                 text = String.valueOf((char) key);
-                actionText = text;
                 IO.println(text);
             }
             tamagotchi.checkIfAlive();
-            drawTamagotchi(500,500);
             if(tamagotchi.getAlive()){
                 switch (text){
                     case "1":
@@ -211,16 +209,16 @@ public class Window {
                         tamagotchi.setAliveFalse();
                     default:
                 }
+
                 nvgText(vg, 200, 120, "Latest Action: " + tamagotchi.latestAction);
                 nvgText(vg,200, 75, "What do you want to do? 1. Feed | 2. Play | 3. Work | 4. Gamble | 5. Quit.");
                 nvgText(vg, 150, 1100, tamagotchi.toString());
-                nvgText(vg, 500,500, text);
             }else nvgText(vg,500,750,tamagotchi.name + " is dead ):");
-
-
+            drawTamagotchi(500,500);
+            if(KeyListener.isKeyPressed(GLFW_KEY_R))
+                tamagotchi = new TamagotchiMethods();
 
             nvgEndFrame(vg);
-
 
             glfwSwapBuffers(glfwWindow);
             KeyListener.endFrame();
@@ -232,14 +230,16 @@ public class Window {
         nvgRect(vg, x, y, 200, 200);
 
         if(tamagotchi.getAlive()){
-            NVGColor color = NVGColor.create()
-                    .r(0f)
-                    .g(0.5f)
-                    .b(0.0f)
-                    .a(1.0f);
-
-            nvgFillColor(vg, color);
-            nvgFill(vg);
+            nvgTextBox(vg, 500, 500, width -2 * 20, """
+                          ,-~~-.___.
+                         / |  '     \\
+                        (  )         0             \s
+                         \\_/-, ,----'           \s
+                            ====           //                    \s
+                           /  \\-'~;    /~~~(O)
+                          /  __/~|   /       |    \s
+                        =(  _____| (_________|   W<
+                        """);
         }
     }
 }
