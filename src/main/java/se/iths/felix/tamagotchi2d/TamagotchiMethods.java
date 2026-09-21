@@ -1,7 +1,10 @@
 package se.iths.felix.tamagotchi2d;
 
+import static org.lwjgl.nanovg.NanoVG.nvgText;
+
 public class TamagotchiMethods {
     String name;
+    String latestAction;
     boolean alive = true;
     int food;
     int happiness;
@@ -12,8 +15,9 @@ public class TamagotchiMethods {
     static String[] jobs = {"Javautvecklare", "Zooskötare", "Sotare", "Professional Street Pimp", "Booeing Factory Worker", "FF CEO"};
     static double[] jobsMult = {1.5, 0.8, 2.3, 5, 10, 100};
 
+
     public TamagotchiMethods() {
-        this.name = "felix";
+        this.name = "Bichard";
         this.alive = alive;
         this.food = 5;
         this.happiness = 5;
@@ -43,9 +47,18 @@ public class TamagotchiMethods {
         return this.job;
     }
 
+    public boolean getAlive(){
+        return alive;
+    }
+
+    public void setAliveFalse(){
+        this.alive = false;
+    }
+
     public void feed() {
         System.out.println("You feed your tamagotchi");
         this.food += 4;
+        this.happiness --;
     }
 
     public void play() {
@@ -86,12 +99,25 @@ public class TamagotchiMethods {
         }
     }
 
+
+    public void checkIfAlive(){
+        if(food <= 0 || happiness <= 0 || money <= -500){
+            this.alive = false;
+        }
+    }
+
+    public void latestAction(String action){
+        this.latestAction = action;
+    }
+
     @Override
     public String toString() {
         return
                 "name: " + name +
                 ", food: " + food +
                 ", happiness: " + happiness +
-                ", money:" + money;
+                ", money:" + money +
+                ", Job: " + job +
+                ", money mult: " + jobMult;
     }
 }

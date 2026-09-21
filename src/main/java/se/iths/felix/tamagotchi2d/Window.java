@@ -28,6 +28,7 @@ public class Window {
     private double lastTime = System.currentTimeMillis();
     private int fps = 0;
     private int frames = 0;
+    private String actionText;
 
     TamagotchiMethods tamagotchi = new TamagotchiMethods();
 
@@ -178,38 +179,67 @@ public class Window {
             nvgFillColor(vg, color);
 
             nvgText(vg, 0, 100, "FPS: " + fps);
-            nvgText(vg,200, 75, "What do you want to do? 1. Feed | 2. Play | 3. Work | 4. Gamble | 5. Quit.");
 
             int key = KeyListener.getKeyPressed();
 
             if(key != -1){
                 text = String.valueOf((char) key);
+                actionText = text;
                 IO.println(text);
             }
-            switch (text){
-                case "1":
-                    tamagotchi.feed();
-                    break;
-                case"2":
-                    tamagotchi.play();
-                    break;
-                case"3":
-                    tamagotchi.work();
-                    break;
-                case"4":
-                    tamagotchi.gamble();
-                    break;
-                default:
-            }
+            tamagotchi.checkIfAlive();
+            drawTamagotchi(500,500);
+            if(tamagotchi.getAlive()){
+                switch (text){
+                    case "1":
+                        tamagotchi.feed();
+                        tamagotchi.latestAction("you feed "+tamagotchi.name);
+                        break;
+                    case"2":
+                        tamagotchi.play();
+                        tamagotchi.latestAction("you play with " + tamagotchi.name);
+                        break;
+                    case"3":
+                        tamagotchi.work();
+                        tamagotchi.latestAction("you go to work");
+                        break;
+                    case"4":
+                        tamagotchi.gamble();
+                        tamagotchi.latestAction("You gamble");
+                        break;
+                    case"5":
+                        tamagotchi.setAliveFalse();
+                    default:
+                }
+                nvgText(vg, 200, 120, "Latest Action: " + tamagotchi.latestAction);
+                nvgText(vg,200, 75, "What do you want to do? 1. Feed | 2. Play | 3. Work | 4. Gamble | 5. Quit.");
+                nvgText(vg, 150, 1100, tamagotchi.toString());
+                nvgText(vg, 500,500, text);
+            }else nvgText(vg,500,750,tamagotchi.name + " is dead ):");
 
-            nvgText(vg, 500, 800, tamagotchi.toString());
-            nvgText(vg, 500,500, text);
+
 
             nvgEndFrame(vg);
 
 
             glfwSwapBuffers(glfwWindow);
             KeyListener.endFrame();
+        }
+    }
+    private void drawTamagotchi(float x, float y) {
+        nvgBeginPath(vg);
+
+        nvgRect(vg, x, y, 200, 200);
+
+        if(tamagotchi.getAlive()){
+            NVGColor color = NVGColor.create()
+                    .r(0f)
+                    .g(0.5f)
+                    .b(0.0f)
+                    .a(1.0f);
+
+            nvgFillColor(vg, color);
+            nvgFill(vg);
         }
     }
 }
