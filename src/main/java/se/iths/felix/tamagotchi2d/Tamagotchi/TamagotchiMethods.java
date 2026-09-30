@@ -1,5 +1,8 @@
 package se.iths.felix.tamagotchi2d.Tamagotchi;
 
+import se.iths.felix.tamagotchi2d.Tamagotchi.jobStuff.Job;
+import se.iths.felix.tamagotchi2d.Tamagotchi.jobStuff.JobType;
+
 import static org.lwjgl.nanovg.NanoVG.nvgText;
 
 public class TamagotchiMethods {
@@ -9,11 +12,11 @@ public class TamagotchiMethods {
     int food;
     int happiness;
     int money;
-    static String job;
-    static double jobMult;
-    static boolean hasWork;
-    static String[] jobs = {"Javautvecklare", "Zooskötare", "Sotare", "Professional Street Pimp", "Booeing Factory Worker", "FF CEO"};
-    static double[] jobsMult = {1.5, 0.8, 2.3, 5, 10, 100};
+    Job job;
+    double jobMult;
+    boolean hasWork;
+//    static String[] jobs = {"Javautvecklare", "Zooskötare", "Sotare", "Professional Street Pimp", "Booeing Factory Worker", "FF CEO"};
+//    static double[] jobsMult = {1.5, 0.8, 2.3, 5, 10, 100};
 
 
     public TamagotchiMethods() {
@@ -22,7 +25,7 @@ public class TamagotchiMethods {
         this.food = 5;
         this.happiness = 5;
         this.money = 0;
-        this.job = "none";
+        this.job = Job.UNEMPLOYMENT;
         this.jobMult = 1;
         this.hasWork = false;
     }
@@ -44,7 +47,7 @@ public class TamagotchiMethods {
     }
 
     public String getJob(){
-        return this.job;
+        return this.job.getName();
     }
 
     public boolean getAlive(){
@@ -57,28 +60,36 @@ public class TamagotchiMethods {
 
     public void feed() {
         System.out.println("You feed your tamagotchi");
-        this.food += 4;
-        this.happiness --;
+        if(this.money < 10){
+            this.latestAction = "You don't have enough money to buy food ):";
+        }
+        else {
+            this.food += 4;
+            this.money -= 10;
+            this.happiness --;
+            this.latestAction = "you feed " + this.name;
+        }
     }
 
     public void play() {
         System.out.println("You play with your tamagotchi");
         this.happiness += 2;
-    }
+        this.food --;
+        this.latestAction = "you play with " + this.name;
 
+    }
 
     public void findJob() {
         int jobChance = (int) (Math.random() * 100);
-        if (jobChance < 25) {
-            int findJobInt = (int) (Math.random() * jobs.length);
-            job = jobs[findJobInt];
-            jobMult = jobsMult[findJobInt];
-            hasWork = true;
+        Job randomJob = Job.randomJob();
+        if (jobChance < 25 && !randomJob.getName().equals("Unemployed")) {
+            this.job = randomJob;
+            this.latestAction = "You found a job!!!!, you now work as a " + job.getName();
         }
     }
 
     public void gamble() {
-        float mult = (float) (Math.random() * 5);
+        float mult = (float) (Math.random() * 1.5);
         float tMoney = money * mult;
         money = Math.round(tMoney);
         if (mult > 1) {
@@ -86,14 +97,17 @@ public class TamagotchiMethods {
         } else if (mult < 1) {
             happiness--;
         }
+        this.latestAction = "You multiply your money by " + mult + "x";
         food--;
     }
 
     public void work() {
-        if (hasWork) {
-            money = (int) (this.money + (5 * jobMult));
+        if (!job.getName().equals("Unemployed")) {
+            money = (int) (this.money + (5 * job.getSalary()));
             happiness -= 2;
+            this.latestAction = "You go to work as a " + this.job.getName();
         }else {
+            this.latestAction = "You don't have a job and go to look for one";
             findJob();
         }
     }

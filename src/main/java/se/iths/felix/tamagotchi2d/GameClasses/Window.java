@@ -191,19 +191,15 @@ public class Window {
                 switch (text){
                     case "1":
                         tamagotchi.feed();
-                        tamagotchi.latestAction("you feed "+tamagotchi.name);
                         break;
                     case"2":
                         tamagotchi.play();
-                        tamagotchi.latestAction("you play with " + tamagotchi.name);
                         break;
                     case"3":
                         tamagotchi.work();
-                        tamagotchi.latestAction("you go to work");
                         break;
                     case"4":
                         tamagotchi.gamble();
-                        tamagotchi.latestAction("You gamble");
                         break;
                     case"5":
                         tamagotchi.setAliveFalse();
@@ -215,6 +211,7 @@ public class Window {
                 nvgText(vg, 150, 1100, tamagotchi.toString());
             }else nvgText(vg,500,750,tamagotchi.name + " is dead ):");
             drawTamagotchi(500,500);
+
             if(KeyListener.isKeyPressed(GLFW_KEY_R))
                 tamagotchi = new TamagotchiMethods();
 
