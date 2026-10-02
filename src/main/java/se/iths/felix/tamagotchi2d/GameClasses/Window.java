@@ -7,6 +7,7 @@ import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.nanovg.NanoVGGL3;
 import org.lwjgl.opengl.GL;
 import se.iths.felix.tamagotchi2d.Tamagotchi.TamagotchiMethods;
+import se.iths.felix.tamagotchi2d.util.Time;
 
 import static java.sql.Types.NULL;
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -16,10 +17,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Window {
     private static Window window = null;
-    private final float a;
-    private float r;
-    private float g;
-    private float b;
+    public float r, g, b, a;
     private int width, height;
     private String title;
     private long glfwWindow;
@@ -29,6 +27,9 @@ public class Window {
     private int frames = 0;
     private String actionText;
 
+    private static Scene currentScene;
+
+    // Move this to TamagotchiScene.java
     TamagotchiMethods tamagotchi = new TamagotchiMethods();
 
 
@@ -40,6 +41,21 @@ public class Window {
         g = 0.0f;
         b = 0.65f;
         a = 1;
+    }
+
+    public static void changeScene(int newScene) {
+        switch (newScene) {
+            case 0:
+                currentScene = new LevelEditorScene();
+                currentScene.init();
+                break;
+            case 1:
+                currentScene = new LevelScene();
+                currentScene.init();
+                break;
+            default:
+                assert false : "Unkown scene'" + newScene + "'";
+        }
     }
 
     public static Window get() {
@@ -95,9 +111,8 @@ public class Window {
         glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
 
         glfwMakeContextCurrent(glfwWindow);
-        glfwSwapInterval(1);
+        glfwSwapInterval(0);
         glfwShowWindow(glfwWindow);
-
 
 
         GL.createCapabilities();
@@ -134,20 +149,23 @@ public class Window {
             if (font == -1) {
                 throw new RuntimeException("Failed to load font");
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         nvgEndFrame(vg);
 
         glfwSwapBuffers(glfwWindow);
+        Window.changeScene(0);
     }
 
 
-
     public void loop() {
+        float beginTime = Time.getTime();
+        float endTime = Time.getTime();
+        float dt = -1.0f;
+
         while (!glfwWindowShouldClose(glfwWindow)) {
+
             // poll events
             glfwPollEvents();
             String text = "";
@@ -156,6 +174,10 @@ public class Window {
 
             glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT);
+
+            if (dt >= 0) {
+                currentScene.update(dt);
+            }
 
             double currentTime = System.currentTimeMillis();
             frames++;
@@ -181,38 +203,38 @@ public class Window {
 
             int key = KeyListener.getKeyPressed();
 
-            if(key != -1){
+            if (key != -1) {
                 text = String.valueOf((char) key);
                 IO.println(text);
             }
 
             tamagotchi.checkIfAlive();
-            if(tamagotchi.getAlive()){
-                switch (text){
+            if (tamagotchi.getAlive()) {
+                switch (text) {
                     case "1":
                         tamagotchi.feed();
                         break;
-                    case"2":
+                    case "2":
                         tamagotchi.play();
                         break;
-                    case"3":
+                    case "3":
                         tamagotchi.work();
                         break;
-                    case"4":
+                    case "4":
                         tamagotchi.gamble();
                         break;
-                    case"5":
+                    case "5":
                         tamagotchi.setAliveFalse();
                     default:
                 }
 
                 nvgText(vg, 200, 120, "Latest Action: " + tamagotchi.latestAction);
-                nvgText(vg,200, 75, "What do you want to do? 1. Feed | 2. Play | 3. Work | 4. Gamble | 5. Quit.");
+                nvgText(vg, 200, 75, "What do you want to do? 1. Feed | 2. Play | 3. Work | 4. Gamble | 5. Quit.");
                 nvgText(vg, 150, 1100, tamagotchi.toString());
-            }else nvgText(vg,500,750,tamagotchi.name + " is dead ):");
-            drawTamagotchi(500,500);
+            } else nvgText(vg, 500, 750, tamagotchi.name + " is dead ):");
+            drawTamagotchi(500, 500);
 
-            if(KeyListener.isKeyPressed(GLFW_KEY_R))
+            if (KeyListener.isKeyPressed(GLFW_KEY_R))
                 tamagotchi = new TamagotchiMethods();
 
 
@@ -220,24 +242,29 @@ public class Window {
 
             glfwSwapBuffers(glfwWindow);
             KeyListener.endFrame();
+
+            endTime = Time.getTime();
+            dt = endTime - beginTime;
+            beginTime = endTime;
         }
     }
+
     private void drawTamagotchi(float x, float y) {
         nvgBeginPath(vg);
 
         nvgRect(vg, x, y, 200, 200);
 
-        if(tamagotchi.getAlive()){
-            nvgTextBox(vg, 500, 500, width -2 * 20, """
-                          ,-~~-.___.
-                         / |  '     \\
-                        (  )         0             \s
-                         \\_/-, ,----'           \s
-                            ====           //                    \s
-                           /  \\-'~;    /~~~(O)
-                          /  __/~|   /       |    \s
-                        =(  _____| (_________|   W<
-                        """);
+        if (tamagotchi.getAlive()) {
+            nvgTextBox(vg, 500, 500, width - 2 * 20, """
+                      ,-~~-.___.
+                     / |  '     \\
+                    (  )         0             \s
+                     \\_/-, ,----'           \s
+                        ====           //                    \s
+                       /  \\-'~;    /~~~(O)
+                      /  __/~|   /       |    \s
+                    =(  _____| (_________|   W<
+                    """);
         }
     }
 }
