@@ -13,10 +13,9 @@ public class TamagotchiMethods {
     int happiness;
     int money;
     Job job;
-    double jobMult;
+    int salary;
     boolean hasWork;
-//    static String[] jobs = {"Javautvecklare", "Zooskötare", "Sotare", "Professional Street Pimp", "Booeing Factory Worker", "FF CEO"};
-//    static double[] jobsMult = {1.5, 0.8, 2.3, 5, 10, 100};
+
 
 
     public TamagotchiMethods() {
@@ -25,8 +24,8 @@ public class TamagotchiMethods {
         this.food = 5;
         this.happiness = 5;
         this.money = 0;
+        this.salary = 0;
         this.job = Job.UNEMPLOYMENT;
-        this.jobMult = 1;
         this.hasWork = false;
     }
 
@@ -84,6 +83,7 @@ public class TamagotchiMethods {
         Job randomJob = Job.randomJob();
         if (jobChance < 25 && !randomJob.getName().equals("Unemployed")) {
             this.job = randomJob;
+            this.salary = job.getSalary();
             this.latestAction = "You found a job!!!!, you now work as a " + job.getName();
         }
     }
@@ -103,7 +103,7 @@ public class TamagotchiMethods {
 
     public void work() {
         if (!job.getName().equals("Unemployed")) {
-            money = (int) (this.money + (5 * job.getSalary()));
+            money = (int) (this.money + this.salary);
             happiness -= 2;
             this.latestAction = "You go to work as a " + this.job.getName();
         }else {
@@ -131,6 +131,6 @@ public class TamagotchiMethods {
                 ", happiness: " + happiness +
                 ", money:" + money +
                 ", Job: " + job +
-                ", money mult: " + jobMult;
+                ", Salary:" + salary;
     }
 }

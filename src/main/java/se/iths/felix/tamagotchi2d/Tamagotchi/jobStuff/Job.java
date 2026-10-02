@@ -4,8 +4,14 @@ import java.util.Random;
 
 public enum Job {
     UNEMPLOYMENT("Unemployed",0, JobType.UNEMPLOYED),
-    KEBAB_ENGINEER("Kebab Engineer", 10, JobType.REAL);
 
+    KEBAB_ENGINEER("Kebab Engineer", 50, JobType.REAL),
+    THE_CEO("The CEO", 75, JobType.REAL),
+
+    DISCORD_MOD("Discord Moderator", -10, JobType.SCAM),
+
+    LAB_SACRIFICE("Lab Sacrifice", 67, JobType.ILLEGAL),
+    CHICKEN_NUGGET_SCIENTIST("Chicken Nugget Scientist", 6 , JobType.ILLEGAL);
 
     private final String name;
     private final int salary;
