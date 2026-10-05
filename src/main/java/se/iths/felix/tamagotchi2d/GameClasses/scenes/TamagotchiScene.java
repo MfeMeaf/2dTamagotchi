@@ -1,5 +1,6 @@
-package se.iths.felix.tamagotchi2d.GameClasses;
+package se.iths.felix.tamagotchi2d.GameClasses.scenes;
 
+import se.iths.felix.tamagotchi2d.GameClasses.Scene;
 import se.iths.felix.tamagotchi2d.Tamagotchi.TamagotchiMethods;
 
 public class TamagotchiScene extends Scene {

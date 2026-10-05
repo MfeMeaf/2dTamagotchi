@@ -6,6 +6,8 @@ import org.lwjgl.nanovg.NVGColor;
 import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.nanovg.NanoVGGL3;
 import org.lwjgl.opengl.GL;
+import se.iths.felix.tamagotchi2d.GameClasses.scenes.LevelEditorScene;
+import se.iths.felix.tamagotchi2d.GameClasses.scenes.LevelScene;
 import se.iths.felix.tamagotchi2d.Tamagotchi.TamagotchiMethods;
 import se.iths.felix.tamagotchi2d.util.Time;
 

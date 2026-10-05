@@ -1,7 +1,8 @@
-package se.iths.felix.tamagotchi2d.GameClasses;
+package se.iths.felix.tamagotchi2d.GameClasses.scenes;
 
 
 import org.lwjgl.BufferUtils;
+import se.iths.felix.tamagotchi2d.GameClasses.Scene;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -14,7 +15,7 @@ public class LevelEditorScene extends Scene {
     private final String vertexShaderSource =
             "#version 330 core\n" +
                     "layout (location = 0) in vec3 aPos;\n" +
-                    "layout (location = 0) in vec4 aColor;\n" +
+                    "layout (location = 1) in vec4 aColor;\n" +
                     "\n" +
                     "out vec4 fColor;\n" +
                     "\n" +
@@ -40,10 +41,10 @@ public class LevelEditorScene extends Scene {
 
     private float[] vertexArray = {
             // posistion                      // Color
-            0.5f, -0.5f, 0.0f,/*              */ 1.0f, 0.0f, 0.0f, 1.0f, //bottom right 0
-            -0.0f, 0.5f, 0.0f,/*              */ 0.0f, 1.0f, 0.0f, 1.0f, // top left    1
-            0.5f, 0.5f, 0.0f,/*               */ 0.0f, 0.0f, 1.0f, 1.0f, // top right   2
-            -0.5f, -0.5f, 0.0f,/*             */ 1.0f, 1.0f, 0.0f, 1.0f, // bottom left 3
+            1f, -1f, 1f,/*              */ 1.0f, 0.0f, 0.0f, 1.0f, //bottom right 0
+            -1f, 1f, 1f,/*              */ 0.60f, .30f, 0.90f, 1.0f, // top left    1
+            1f, 1f, 1f,/*               */ 0.0f, 0.0f, 1.0f, 1.0f, // top right   2
+            -1f, -1f, 1.0f,/*             */ 1.0f, 1.0f, 0.0f, 1.0f, // bottom left 3
     };
 
     // Important: must be in counter-clockwise order
