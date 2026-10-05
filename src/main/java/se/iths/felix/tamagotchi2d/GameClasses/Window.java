@@ -8,6 +8,7 @@ import org.lwjgl.nanovg.NanoVGGL3;
 import org.lwjgl.opengl.GL;
 import se.iths.felix.tamagotchi2d.GameClasses.scenes.LevelEditorScene;
 import se.iths.felix.tamagotchi2d.GameClasses.scenes.LevelScene;
+import se.iths.felix.tamagotchi2d.GameClasses.scenes.TamagotchiScene;
 import se.iths.felix.tamagotchi2d.Tamagotchi.TamagotchiMethods;
 import se.iths.felix.tamagotchi2d.util.Time;
 
@@ -52,7 +53,7 @@ public class Window {
                 currentScene.init();
                 break;
             case 1:
-                currentScene = new LevelScene();
+                currentScene = new TamagotchiScene();
                 currentScene.init();
                 break;
             default:
@@ -210,34 +211,8 @@ public class Window {
                 IO.println(text);
             }
 
-            tamagotchi.checkIfAlive();
-            if (tamagotchi.getAlive()) {
-                switch (text) {
-                    case "1":
-                        tamagotchi.feed();
-                        break;
-                    case "2":
-                        tamagotchi.play();
-                        break;
-                    case "3":
-                        tamagotchi.work();
-                        break;
-                    case "4":
-                        tamagotchi.gamble();
-                        break;
-                    case "5":
-                        tamagotchi.setAliveFalse();
-                    default:
-                }
-
-                nvgText(vg, 200, 120, "Latest Action: " + tamagotchi.latestAction);
-                nvgText(vg, 200, 75, "What do you want to do? 1. Feed | 2. Play | 3. Work | 4. Gamble | 5. Quit.");
-                nvgText(vg, 150, 1100, tamagotchi.toString());
-            } else nvgText(vg, 500, 750, tamagotchi.name + " is dead ):");
-            drawTamagotchi(500, 500);
-
             if (KeyListener.isKeyPressed(GLFW_KEY_R))
-                tamagotchi = new TamagotchiMethods();
+                Window.changeScene(1);
 
 
             nvgEndFrame(vg);
@@ -251,22 +226,8 @@ public class Window {
         }
     }
 
-    private void drawTamagotchi(float x, float y) {
-        nvgBeginPath(vg);
 
-        nvgRect(vg, x, y, 200, 200);
-
-        if (tamagotchi.getAlive()) {
-            nvgTextBox(vg, 500, 500, width - 2 * 20, """
-                      ,-~~-.___.
-                     / |  '     \\
-                    (  )         0             \s
-                     \\_/-, ,----'           \s
-                        ====           //                    \s
-                       /  \\-'~;    /~~~(O)
-                      /  __/~|   /       |    \s
-                    =(  _____| (_________|   W<
-                    """);
-        }
+    public long getVG() {
+        return vg;
     }
 }
